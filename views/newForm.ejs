@@ -1,0 +1,71 @@
+<div class="container">
+  <form action="/newForm" method="POST">
+    <div class="form-group">
+      <label for="field1">Complete Specification of the Item Proposed</label>
+      <input type="text" class="form-control" name="field1" />
+    </div>
+    <div class="form-group">
+      <label for="quantity">Quantity</label>
+      <input type="number" class="form-control" name="quantity" />
+    </div>
+
+    <div class="form-group">
+      <label for="budgetHead"
+        >Budget Head of the Department/Office from where expenditure is to be
+        met out</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="budgetHead">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+      <label for="cost"
+        >Actual/Estimated cost of the required item to be purchased</label>
+      <input type="number" class="form-control" name="cost" />
+    </div>
+    
+    
+    <div class="form-group">
+        <label for="nameOfIndenter">Name of Indenter</label>
+        <input type="text" class="form-control" name="nameOfIndenter" />
+    </div>
+
+    <div class="form-group">
+        <label for="departmentOfIndenter">Department of Indenter</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="departmentOfIndenter">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    </div>
+    <hr>
+    <div class="form-group">
+        <label for="fileId">File Id</label>
+        <input type="text" class="form-control" name="fileId" />
+      </div>
+      <div class="form-group">
+          <label for="date">Date</label>
+          <input type="date" class="form-control" name="date" />
+      </div>
+
+    <!-- <div class="form-group">
+        <label for="commentsIfAny">Comments if any</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="commentsIfAny">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    </div> -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<% include partials/footer %>

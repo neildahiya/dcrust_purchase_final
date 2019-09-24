@@ -1,0 +1,90 @@
+<div class="container">
+  <form action="/newForm" method="POST">
+    <div class="form-group">
+      <label for="field1">Complete Specification of the Item Proposed</label>
+      <input
+        type="text"
+        class="form-control"
+        name="field1"
+        value="<%= foundForm.field1%>"
+      />
+    </div>
+    <div class="form-group">
+      <label for="quantity">Quantity</label>
+      <input
+        type="number"
+        class="form-control"
+        name="quantity"
+        value="<%= foundForm.quantity%>"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="budgetHead"
+        >Budget Head of the Department/Office from where expenditure is to be
+        met out</label
+      >
+      <p><%= foundForm.budgetHead%></p>
+    </div>
+
+    <div class="form-group">
+      <label for="cost"
+        >Actual/Estimated cost of the required item to be purchased</label
+      >
+      <input
+        type="number"
+        class="form-control"
+        name="cost"
+        value="<%= foundForm.cost%>"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="nameOfIndenter">Name of Indenter</label>
+      <input
+        type="text"
+        class="form-control"
+        name="nameOfIndenter"
+        value="<%= foundForm.nameOfIndenter%>"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="departmentOfIndenter">Department of Indenter</label>
+      <p><%= foundForm.departmentOfIndenter%></p>
+    </div>
+    <hr />
+    <div class="form-group">
+      <label for="fileId">File Id</label>
+      <p><%= foundForm.fileId%></p>
+    </div>
+    <div class="form-group">
+      <label for="date">Date</label>
+      <p><%= foundForm.date%></p>
+    </div>
+  </form>
+  <hr />
+  <hr />
+  <hr />
+
+  <!-- LOGs -->
+  <% foundForm.logs.forEach(function(log){ %>
+  <p><%= log.date %></p>
+  <p><%= log.department %></p>
+  <p><%= log.comment %></p>
+  <hr />
+  <% }) %>
+  <!-- END of Log -->
+  <form action="/existing" method="POST">
+    <!-- <button type="submit" class="btn btn-success">Approve</button><br /> -->
+    <button type="submit" class="btn btn-primary" formaction="/approve">
+      Approve
+    </button>
+    <a
+      href="/viewFormWaitingForApproval/<%= foundForm._id%>/comments/new"
+      class="btn btn-success"
+      >Add new log</a
+    >
+  </form>
+</div>
+<% include partials/footer %>

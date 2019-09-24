@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <title>Test app</title>
+    <style>
+      .nav a {
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <ul
+      class="nav justify-content-center "
+      style="background: dodgerblue;color:white;"
+    >
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <%if(!isAuth){%>
+      <li class="nav-item">
+        <a class="nav-link" href="/auth/login">Login</a>
+      </li>
+      <%}else{%>
+      <li class="nav-item">
+        <a class="nav-link" href="/auth/logout">Logout</a>
+      </li>
+      <%}%>
+    </ul>
+  </body>
+</html>
