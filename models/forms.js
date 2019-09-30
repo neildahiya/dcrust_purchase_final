@@ -7,7 +7,7 @@ var formSchema = new mongoose.Schema({
   cost: { type: Number, required: true },
   nameOfIndenter: String,
   departmentOfIndenter: String,
-  fileId: { type: String, required: true },
+  fileId: { type: String, required: true, unique: true },
   date: { type: Date },
   logs: [
     {

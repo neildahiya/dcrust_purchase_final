@@ -105,7 +105,7 @@ exports.getSentBack = (req, res, next) => {
 //     })
 //     .catch(err => console.log(err));
 // };
-
+// var files = [];
 exports.getSingleSentForm = (req, res, next) => {
   SentBackForm.findById(req.params.id, function(err, foundForm) {
     if (err) {
@@ -114,4 +114,48 @@ exports.getSingleSentForm = (req, res, next) => {
       res.render("viewSentBackForm", { foundForm: foundForm });
     }
   });
+};
+exports.getQueries = (req, res, next) => {
+  res.render("queries", { files: [] });
+};
+exports.postQueries = (req, res, next) => {
+  var { fileId, department, date, cost } = req.body;
+  var files = [];
+  var fil = {};
+  if (department) {
+    fil.departmentOfIndenter = department;
+  }
+  if (cost) {
+    fil.cost = { $lte: cost };
+  }
+  Form.find(fil).then(doc => {
+    // console.log(doc);
+  });
+  console.log(fil);
+  if (fileId) {
+    Form.find({ fileId: fileId })
+      .then(files => {
+        return res.render("queries", { files: files });
+      })
+      .catch(err => {
+        // req.flash('error_msg','no file with this id')
+        console.log(err);
+        res.redirect("/queries");
+      });
+  }
+  Form.find().then(docs => {
+    var temp = [];
+    if (department) {
+      temp = docs.filter(i => {
+        return i.departmentOfIndenter.toString() == department.toString();
+      });
+    }
+    if (cost) {
+      temp = temp.filter(i => {
+        return i.cost <= cost;
+      });
+    }
+    // console.log("temp= " + temp);
+  });
+  res.render("queries", { files });
 };

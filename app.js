@@ -82,6 +82,18 @@ app.get("/viewBudgetHeads", function(req, res) {
 
 app.post("/addBudgetHead", function(req, res) {});
 
+app.post("/changeId", function(req, res) {
+  const { fileId, newFileId } = req.body;
+  Form.findOne({ fileId: fileId }).then(file => {
+    console.log(file);
+    file.fileId = newFileId;
+    file.save(f => {
+      console.log(f);
+      res.redirect("/");
+    });
+  });
+});
+
 app.get("/viewFormWaitingForApproval/:id/comments/new", function(req, res) {
   Form.findById(req.params.id, function(err, foundForm) {
     if (err) {
