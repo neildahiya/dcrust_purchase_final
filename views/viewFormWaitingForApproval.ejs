@@ -38,40 +38,48 @@
 </style>
 
 <div class="container">
-  <form action="/newForm" method="POST">
-    <div class="form-group">
-      <label for="field1">Complete Specification of the Item Proposed</label>
-      <input
-        type="text"
-        class="form-control"
-        name="field1"
-        value="<%= foundForm.field1%>"
-      />
+  <form  action="/newForm" method="POST">
+    <div class="form-inline">
+        <div class="form-group">
+            <label for="field1">Complete Specification</label>
+            <input
+disabled              type="text"
+              class="form-control"
+              name="field1"
+              value="<%= foundForm.field1%>"
+            />
+          </div>
+          
+          <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input
+disabled              type="number"
+              class="form-control"
+              name="quantity"
+              value="<%= foundForm.quantity%>"
+            />
+          </div>
     </div>
-    <div class="form-group">
-      <label for="quantity">Quantity</label>
-      <input
-        type="number"
-        class="form-control"
-        name="quantity"
-        value="<%= foundForm.quantity%>"
-      />
-    </div>
+    
 
-    <div class="form-group">
+    <div class="form-group ">
       <label for="budgetHead"
-        >Budget Head of the Department/Office from where expenditure is to be
-        met out</label
-      >
-      <p><%= foundForm.budgetHead%></p>
+        >Budget Head </label>
+        <input
+disabled              type="number"
+              class="form-control"
+              name="quantity"
+              value="<%= foundForm.budgetHead%>"
+            />
+      
     </div>
 
     <div class="form-group">
       <label for="cost"
-        >Actual/Estimated cost of the required item to be purchased</label
+        >Actual/Estimated cost</label
       >
       <input
-        type="number"
+disabled        type="number"
         class="form-control"
         name="cost"
         value="<%= foundForm.cost%>"
@@ -81,7 +89,7 @@
     <div class="form-group">
       <label for="nameOfIndenter">Name of Indenter</label>
       <input
-        type="text"
+disabled        type="text"
         class="form-control"
         name="nameOfIndenter"
         value="<%= foundForm.nameOfIndenter%>"
@@ -90,7 +98,13 @@
 
     <div class="form-group">
       <label for="departmentOfIndenter">Department of Indenter</label>
-      <p><%= foundForm.departmentOfIndenter%></p>
+      <input
+disabled        type="text"
+        class="form-control"
+        name="nameOfIndenter"
+        value="<%= foundForm.departmentOfIndenter%>"
+      />
+      
     </div>
     <hr />
     <div class="form-group">
@@ -101,16 +115,40 @@
       <label for="date">Date</label>
       <p><%= foundForm.date%></p>
     </div>
+    <% if(!foundForm.approved){%>
     <div id="myBtn" class="gtb btn btn-primary">Approve</button>
     </div>
+    <% } %>
+    <%if(!foundForm.rejected){%>
     <a
       href="/viewFormWaitingForApproval/<%= foundForm._id%>/comments/new"
       class="btn btn-success"
       >Add new log</a
-    >
+    ><%}%>
   </form>
   <hr />
-  <hr />
+  <table style="width:100%">
+      <tr>
+        <th>Date</th>
+        <th>Department</th>
+        <th>Comment</th>
+      </tr>
+      
+      
+      
+      <% for(var i=foundForm.logs.length-1; i>=0; i--){ %>
+        <tr>
+        <td><%= foundForm.logs[i].date.toString().substring(0,15) %></td>
+        <td><%= foundForm.logs[i].department %></td>
+        <td><%= foundForm.logs[i].comment %></td>
+      </tr>
+      <% } %>
+
+    
+      
+  </table>
+  
+  
   <hr />
 
   <a id="myModal" class="modal">
@@ -130,20 +168,17 @@
             />
           <input type="hidden" name="fileId" value="<%= foundForm.fileId %>">
         </div>
-        <button type="submit" class="btn btn-success">
+        
+        <button type="submit" class="btn btn-success" >
           Approve</button ><br />
+          
       </div>
 
       </form>
     
 
   <!-- LOGs -->
-  <!-- <% foundForm.logs.forEach(function(log){ %>
-  <p><%= log.date %></p>
-  <p><%= log.department %></p>
-  <p><%= log.comment %></p>
-  <hr />
-  <% }) %> -->
+ 
   <!-- END of Log -->
 
   <!-- <button type="submit" class="btn btn-success">Approve</button><br /> -->

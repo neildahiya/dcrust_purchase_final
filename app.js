@@ -13,6 +13,8 @@ const express = require("express"),
   passport = require("passport"),
   budgetHeadRoutes = require("./routes/budgetHead"),
   Log = require("./models/logs");
+
+const { ensureAuthenticated } = require("./config/auth");
 (formRoutes = require("./routes/form")), (Form = require("./models/forms"));
 require("./config/passport")(passport);
 const MongoURI =
@@ -51,7 +53,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/newForm", function(req, res) {
+app.get("/newForm", ensureAuthenticated, function(req, res) {
   res.render("newForm");
 });
 // app.post("/newForm", function(req, res) {
@@ -67,12 +69,12 @@ app.use(budgetHeadRoutes);
 app.use("/auth", authRoutes);
 
 // //////////////////     Admin Dashboard
-app.get("/adminDash", function(req, res) {
+app.get("/adminDash", ensureAuthenticated, function(req, res) {
   res.render("adminDash");
 });
 
 /////////////////      Comments
-app.get("/addBudgetHead", function(req, res) {
+app.get("/addBudgetHead", ensureAuthenticated, function(req, res) {
   res.render("addBudgetHead");
 });
 
@@ -87,51 +89,67 @@ app.post("/changeId", function(req, res) {
   Form.findOne({ fileId: fileId }).then(file => {
     console.log(file);
     file.fileId = newFileId;
+    file.approved = true;
+    file.rejected = false;
     file.save(f => {
       console.log(f);
-      res.redirect("/");
+      res.redirect("/dashboard");
     });
   });
 });
 
-app.get("/viewFormWaitingForApproval/:id/comments/new", function(req, res) {
-  Form.findById(req.params.id, function(err, foundForm) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("newLog", { foundForm: foundForm });
-    }
-  });
-});
-app.post("/viewFormWaitingForApproval/:id/comments", function(req, res) {
-  Form.findById(req.params.id, function(err, foundForm) {
-    console.log("Here");
-    if (err) {
-      console.log(err);
-      res.redirect("/");
-    } else {
-      Log.create(
-        {
-          department: req.body.department,
-          date: req.body.date,
-          comment: req.body.comment
-        },
-        function(err, comment) {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log(comment);
-            foundForm.logs.push(comment);
-            foundForm.save();
-            res.redirect("/");
+app.get(
+  "/viewFormWaitingForApproval/:id/comments/new",
+  ensureAuthenticated,
+  function(req, res) {
+    Form.findById(req.params.id, function(err, foundForm) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("newLog", { foundForm: foundForm });
+      }
+    });
+  }
+);
+app.post(
+  "/viewFormWaitingForApproval/:id/comments",
+  ensureAuthenticated,
+  function(req, res) {
+    Form.findById(req.params.id, function(err, foundForm) {
+      console.log("Here");
+      if (err) {
+        console.log(err);
+        res.redirect("/");
+      } else {
+        Log.create(
+          {
+            department: req.body.department,
+            date: req.body.date,
+            comment: req.body.comment
+          },
+          function(err, comment) {
+            if (err) {
+              console.log(err);
+            } else {
+              // console.log(comment);
+              foundForm.logs.push(comment);
+              console.log("comment = " + comment);
+              if (comment.comment === "Reject") {
+                console.log("rejected");
+                foundForm.rejected = true;
+                foundForm.approved = false;
+              }
+              foundForm.save();
+              res.redirect("/dashboard");
+            }
           }
-        }
-      );
-    }
-  });
-});
+        );
+      }
+    });
+  }
+);
 
-app.get("/", function(req, res) {
+app.get("/", ensureAuthenticated, function(req, res) {
   res.render("home");
 });
 

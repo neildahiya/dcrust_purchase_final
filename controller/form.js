@@ -120,42 +120,60 @@ exports.getQueries = (req, res, next) => {
 };
 exports.postQueries = (req, res, next) => {
   var { fileId, department, date, cost } = req.body;
-  var files = [];
+  // var files = [];
   var fil = {};
+
+  // if (fileId) {
+  //   Form.find({ fileId: fileId })
+  //     .then(files => {
+  //       return res.render("queries", { files: files });
+  //     })
+  //     .catch(err => {
+  //       // req.flash('error_msg','no file with this id')
+  //       console.log(err);
+  //       res.redirect("/queries");
+  //     });
+  // }
+  if (fileId) {
+    fil.fileId = fileId;
+  }
   if (department) {
     fil.departmentOfIndenter = department;
   }
   if (cost) {
     fil.cost = { $lte: cost };
   }
-  Form.find(fil).then(doc => {
-    // console.log(doc);
-  });
-  console.log(fil);
-  if (fileId) {
-    Form.find({ fileId: fileId })
-      .then(files => {
-        return res.render("queries", { files: files });
-      })
-      .catch(err => {
-        // req.flash('error_msg','no file with this id')
-        console.log(err);
-        res.redirect("/queries");
-      });
+  if (date) {
+    fil.date = { $lte: date };
   }
-  Form.find().then(docs => {
-    var temp = [];
-    if (department) {
-      temp = docs.filter(i => {
-        return i.departmentOfIndenter.toString() == department.toString();
-      });
-    }
-    if (cost) {
-      temp = temp.filter(i => {
-        return i.cost <= cost;
-      });
-    }
-    // console.log("temp= " + temp);
+
+  Form.find(fil).then(files => {
+    // console.log(doc);
+    console.log(files);
+    return res.render("queries", { files: files });
   });
-  res.render("queries", { files });
+  // console.log(fil);
+
+  // Form.find().then(docs => {
+  //   var temp = [];
+  //   if (department) {
+  //     temp = docs.filter(i => {
+  //       return i.departmentOfIndenter.toString() == department.toString();
+  //     });
+  //   }
+  //   if (cost) {
+  //     temp = temp.filter(i => {
+  //       return i.cost <= cost;
+  //     });
+  //   }
+  //   // console.log("temp= " + temp);
+  // });
+  // res.render("queries", { files });
 };
+// exports.postRejected=(req,res,next)=>{
+//   var {formId}=req.body;
+//   Form.findOne({formId}).then(file=>{
+//     file
+//   })
+
+// }

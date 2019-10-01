@@ -7,6 +7,8 @@ var formSchema = new mongoose.Schema({
   cost: { type: Number, required: true },
   nameOfIndenter: String,
   departmentOfIndenter: String,
+  approved: { type: Boolean, default: false },
+  rejected: { type: Boolean, default: false },
   fileId: { type: String, required: true, unique: true },
   date: { type: Date },
   logs: [
